@@ -1,3 +1,10 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-08-13 15:12:43
+ * @LastEditTime: 2019-08-13 16:57:44
+ * @LastEditors: Please set LastEditors
+ -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +16,9 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="../../js/jquery-1.12.4.min.js"></script>
+    <script src="../../js/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -29,7 +39,67 @@
             </form>
         </div>
 
-    </div> 
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">温馨提示</h4>
+                </div>
+                <div class="modal-body">
+                   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 给登录注册点击事件
+        $(function () {
+            $('.input_sub').on('click', function (e) {
+                e.preventDefault();
+                var username = $('.input_txt').val().trim();
+                var password = $('.input_pass').val().trim();
+                // 判断是否为空
+                if (username == "" || password == "") {
+                    // alert('账号或密码为空,请重新输入');
+                    $('.modal-body').text('账号或密码为空,请重新输入');
+                    $('#myModal').modal({
+                        keyboard: true
+                    })
+                    return;
+                }
+                $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:8080/admin/user/login',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function (backData) {
+                        if (backData.code == 200) {
+                            // 登录成功后跳转到首页
+                            window.location.href = 'index.html';
+                        } else {
+                            // alert('账号或密码有误')
+                            $('.modal-body').text('账号或密码有误')
+                            $('#myModal').modal({
+                                keyboard: true
+                            })
+                        }
+                    }
+                })
+            })
+        })
+    // 获取.input_txt val  input_pass val
+    // 发送ajax请求
+    </script>
 
 </body>
 
